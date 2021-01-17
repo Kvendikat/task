@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head::head('Архив заготовок')}"></head>
+<body>
+    <div class="container">
+        <div th:replace="~{fragments/header::header}"></div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <table class="table table-bordered text-center table-hover" align="center">
+            <thead class="thead-light">
+                <tr>
+                    <th>№ п/п</th>
+                    <th>Название продукта</th>
+                    <th>Цена, руб.</th>
+                    <th>Страна-производитель</th>
+                    <th>Описание</th>
+                    <th>Восстановить</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+                <tr th:each="product : ${items}">
+                    <td th:text="${productStat.count} + ${page} * ${pageValue}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.country}"></td>
+                    <td th:text="${product.note}"></td>
+                    <td>
+                        <a th:href="@{/product/return-to-active/{id}(id = ${product.id})}">
+                            <i class="fa fa-reply-all" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a data-toggle="modal" href="#modal">
+                            <i style="color: red" class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <!--Модальное окно для удаления-->
+                    <div class="modal fade" id="modal" data-backdrop="static" tabindex="-1"
+                         role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel">Удаление протокола</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Вы уверены, что хотите удалить продукт? Его восстановление будет невозможно!
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                    <a type="button" class="btn btn-danger" th:href="@{/product/delete/{id}(id = ${product.id})}">
+                                        Удалить
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <br/>
+        <br/>
+        <nav>
+            <ul class="pagination">
+                <li th:class="${page == 0 ? 'page-item disabled' : 'page-item'}">
+                    <a th:href="@{/product/archive?page={page}(page=${page - 1})}" class="page-link">&laquo;</a>
+                </li>
+                <li th:each="p : ${pagesRange}" th:class="${p == page ? 'page-item active' : 'page-item'}">
+                    <a th:href="@{/product/archive?page={page}(page=${p})}" class="page-link" th:text="${p + 1}"></a>
+                </li>
+                <li th:class="${page == pages - 1 ? 'page-item disabled' : 'page-item'}">
+                    <a th:href="@{/product/archive?page={page}(page=${page + 1})}" class="page-link">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+        <div th:replace="~{fragments/js-connect::js-connect}"></div>
+    </div>
+</body>

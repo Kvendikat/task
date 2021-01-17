@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head::head('Добавление')}"></head>
+<body>
+    <div class="container">
+        <div th:replace="~{fragments/header::header}"></div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <form th:action="@{/product/add}"  method="post" th:object="${newProduct}">
+            <div class="form-group form-row align-items-center col-12">
+                <div class="col-3"></div>
+                <div class="col-2">
+                    <label for="name"
+                           class="col-form-label">Название
+                    </label>
+                </div>
+                <div class="col-4">
+                    <input id="name"
+                           type="text"
+                           th:field="*{name}"
+                           th:class="${errors.containsKey('number')
+                           ? 'form-control is-invalid'
+                           : 'form-control'}"
+                           placeholder="Введите название продукта"/>
+                    <ul th:if="${errors.containsKey('name')}">
+                        <li th:each="error : ${errors.get('name')}" th:text="${error}" style="color: darkred"></li>
+                    </ul>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="form-group form-row align-items-center col-12">
+                <div class="col-3"></div>
+                <div class="col-2">
+                    <label for="price"
+                           class="col-form-label">Цена, руб.
+                    </label>
+                </div>
+                <div class="col-4">
+                    <input id="price"
+                           type="number"
+                           step="1"
+                           th:field="*{price}"
+                           th:class="${errors.containsKey('price')
+                           ? 'form-control is-invalid'
+                           : 'form-control'}"
+                           placeholder="Введите стоимость продукта"/>
+                    <ul th:if="${errors.containsKey('price')}">
+                        <li th:each="error : ${errors.get('price')}" th:text="${error}" style="color: darkred"></li>
+                    </ul>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="form-group form-row align-items-center col-12">
+                <div class="col-3"></div>
+                <div class="col-2">
+                    <label for="country"
+                           class="col-form-label">Страна-производитель
+                    </label>
+                </div>
+                <div class="col-4">
+                    <input id="country"
+                           type="text"
+                           th:field="*{country}"
+                           th:class="${errors.containsKey('country')
+                           ? 'form-control is-invalid'
+                           : 'form-control'}"
+                           placeholder="Введите страну-производителя"/>
+                    <ul th:if="${errors.containsKey('country')}">
+                        <li th:each="error : ${errors.get('country')}" th:text="${error}" style="color: darkred"></li>
+                    </ul>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="form-group form-row align-items-center col-12">
+                <div class="col-3"></div>
+                <div class="col-2">
+                    <label for="note"
+                           class="col-form-label">Описание
+                    </label>
+                </div>
+                <div class="col-4">
+                    <input id="note"
+                           type="text"
+                           th:field="*{note}"
+                           placeholder="Введите описагие продукта"/>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="form-group row align-items-center align col-12">
+                <div class="col-3"></div>
+                <div class="col-3">
+                    <a th:href="@{/product/start}"
+                       class="btn btn-secondary col-12" role="button">Назад</a>
+                </div>
+                <button type="submit" class="btn btn-success col-3">Добавить</button>
+                <div class="col-3"></div>
+            </div>
+        </form>
+
+        <div th:replace="~{fragments/js-connect::js-connect}"></div>
+    </div>
+</body>

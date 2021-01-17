@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head::head('Заготовки')}"></head>
+<body>
+    <div class="container">
+        <div th:replace="~{fragments/header::header}"></div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <table class="table table-bordered text-center table-hover" align="center">
+            <thead class="thead-light">
+                <tr>
+                    <th>№ п/п</th>
+                    <th>Название продукта</th>
+                    <th>Цена, руб.</th>
+                    <th>Страна-производитель</th>
+                    <th>Описание</th>
+                    <th>Редактировать</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+                <tr th:each="product : ${items}">
+                    <td th:text="${productStat.count} + ${page} * ${pageValue}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.country}"></td>
+                    <td th:text="${product.note}"></td>
+                    <td>
+                        <a th:href="@{/product/edit/{id}/ (id = ${product.id})}">
+                            <i style="color: black" class="fa fa-pencil-alt" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/product/push-to-archive/{id}/(id = ${product.id})}">
+                           <i style="color: red" class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <br/>
+        <br/>
+        <nav>
+            <ul class="pagination">
+                <li th:class="${page == 0 ? 'page-item disabled' : 'page-item'}">
+                    <a th:href="@{/product/start?page={page}(page=${page - 1})}" class="page-link">&laquo;</a>
+                </li>
+                <li th:each="p : ${pagesRange}" th:class="${p == page ? 'page-item active' : 'page-item'}">
+                    <a th:href="@{/product/start?page={page}(page=${p})}" class="page-link" th:text="${p + 1}"></a>
+                </li>
+                <li th:class="${page == pages - 1 ? 'page-item disabled' : 'page-item'}">
+                    <a th:href="@{/product/start?page={page}(page=${page + 1})}" class="page-link">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+        <div th:replace="~{fragments/js-connect::js-connect}"></div>
+    </div>
+</body>
