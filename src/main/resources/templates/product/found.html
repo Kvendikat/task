@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head::head('Найденные продукты')}"></head>
+<body>
+    <div class="container">
+        <div th:replace="~{fragments/header::header}"></div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div th:if="${#lists.isEmpty(findingProducts)}">
+            <h2>По Вашему запросу ничего не найдено(:</h2>
+        </div>
+        <div th:if="${not #lists.isEmpty(findingProducts)}">
+            <h2>Результат поиска</h2>
+            <table class="table table-bordered text-center table-hover" align="center">
+                <thead class="thead-dark">
+                <tr>
+                    <th>№ п/п</th>
+                    <th>Название продукта</th>
+                    <th>Цена, руб.</th>
+                    <th>Страна-производитель</th>
+                    <th>Описание</th>
+                    <th>В архиве</th>
+                    <th>Редактировать</th>
+                </tr>
+                </thead>
+                <tbody class="align-middle">
+                <tr th:each="product : ${findingProducts}">
+                    <td th:text="${productStat.count}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.country}"></td>
+                    <td th:text="${product.note}"></td>
+                    <td th:if="${product.active}" style="color: green">нет</td>
+                    <td th:unless="${product.active}" style="color: darkred">да</td>
+                    <td>
+                        <a th:href="@{/product/edit/{id}/ (id = ${product.id})}">
+                            <i style="color: black" class="fa fa-pencil-alt" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br/>
+        <a th:href="@{/product/find/}" class="btn btn-success" role="button">
+            Назад
+        </a>
+
+        <div th:replace="~{fragments/js-connect::js-connect}"></div>
+    </div>
+</body>

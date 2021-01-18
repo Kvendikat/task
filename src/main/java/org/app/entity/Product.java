@@ -18,7 +18,7 @@ public class Product {
 
     @Column
     @NotNull(message = "Поле не может быть пустым")
-    @Min(value = 1, message = "Стоимость должна быть положительной")
+    @Min(value = 0, message = "Стоимость должна быть положительной")
     private Integer price;
 
     @Column(length = 50)

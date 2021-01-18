@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@SessionAttributes("findingProducts")
 @RequestMapping("/product")
 public class ProductController {
     @Autowired
@@ -174,5 +175,24 @@ public class ProductController {
         return "redirect:/product/archive";
     }
 
+    @GetMapping("/find")
+    private String findProducts() {
+        return "product/find";
+    }
+
+    @PostMapping("/find")
+    private String findProducts(
+            @RequestParam(name = "productName") String productName,
+            Model model) {
+        List<Product> products = productRepository.findAllByNameContainingOrderByName(productName);
+        model.addAttribute("findingProducts", products);
+
+        return "redirect:/product/found";
+    }
+
+    @GetMapping("/found")
+    private String foundProducts() {
+        return "product/found";
+    }
 
 }

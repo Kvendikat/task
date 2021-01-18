@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="~{fragments/head::head('Изменение параметров заготовки')}"></head>
+<head th:replace="~{fragments/head::head('Изменение параметров продуктов')}"></head>
 <body>
     <div class="container">
         <div th:replace="~{fragments/header::header}"></div>
@@ -8,7 +8,7 @@
         <br/>
         <br/>
         <br/>
-        <form th:action="@{/product/save/} + ${plate.id}" method="post" th:object="${product}">
+        <form th:action="@{/product/save/} + ${product.id}" method="post" th:object="${product}">
             <input style="display: none"
                    id="id"
                    type="text"
@@ -17,14 +17,14 @@
             <div class="form-group form-row align-items-center col-12">
                 <div class="col-3"></div>
                 <div class="col-2">
-                    <label for="number"
+                    <label for="name"
                            class="col-form-label">Название
                     </label>
                 </div>
                 <div class="col-4">
-                    <input id="number"
+                    <input id="name"
                            type="text"
-                           th:field="*{number}"
+                           th:field="*{name}"
                            class="form-control form-control-plaintext"
                            readonly/>
                 </div>
@@ -34,17 +34,20 @@
             <div class="form-group form-row align-items-center col-12">
                 <div class="col-3"></div>
                 <div class="col-2">
-                    <label for="length"
-                           class="col-form-label">Длина, мм
+                    <label for="price"
+                           class="col-form-label">Цена, руб.
                     </label>
                 </div>
                 <div class="col-4">
-                    <input id="length"
+                    <input id="price"
                            type="number"
                            step="1"
-                           th:field="*{length}"
+                           th:field="*{price}"
                            class="form-control"
-                           placeholder="Введите длину заготовки"/>
+                           placeholder="Введите стоимость продукта"/>
+                    <ul th:if="${errors.containsKey('price')}">
+                        <li th:each="error : ${errors.get('price')}" th:text="${error}" style="color: darkred"></li>
+                    </ul>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -52,129 +55,19 @@
             <div class="form-group form-row align-items-center col-12">
                 <div class="col-3"></div>
                 <div class="col-2">
-                    <label for="width"
-                           class="col-form-label">Ширина, мм
+                    <label for="country"
+                           class="col-form-label">Страна-производитель
                     </label>
                 </div>
                 <div class="col-4">
-                    <input id="width"
-                           type="number"
-                           step="1"
-                           th:field="*{width}"
+                    <input id="country"
+                           type="text"
+                           th:field="*{country}"
                            class="form-control"
-                           placeholder="Введите ширину заготовки"/>
-                </div>
-                <div class="col-3"></div>
-            </div>
-
-            <div class="form-group form-row align-items-center col-12">
-                <div class="col-3"></div>
-                <div class="col-2">
-                    <label for="height"
-                           class="col-form-label">Толщина, мм
-                    </label>
-                </div>
-                <div class="col-4">
-                    <input id="height"
-                           type="number"
-                           step="1"
-                           th:field="*{height}"
-                           class="form-control"
-                           placeholder="Введите толщину заготовки"/>
-                </div>
-                <div class="col-3"></div>
-            </div>
-
-            <div class="form-group form-row align-items-center col-12">
-                <div class="col-3"></div>
-                <div class="col-2">
-                    <label for="strainInWork"
-                           class="col-form-label">Величина напряжений в рабочем направлении, нм
-                    </label>
-                </div>
-                <div class="col-4">
-                    <input id="strainInWork"
-                           type="number"
-                           step="0.1"
-                           th:field="*{strainInWork}"
-                           class="form-control"
-                           placeholder="Введите величину напряжений"/>
-                </div>
-                <div class="col-3"></div>
-            </div>
-
-            <div class="form-group form-row align-items-center col-12">
-                <div class="col-3"></div>
-                <div class="col-2">
-                    <label for="strainInNotWork"
-                           class="col-form-label">Величина напряжений в нерабочем направлении, нм
-                    </label>
-                </div>
-                <div class="col-4">
-                    <input id="strainInNotWork"
-                           type="number"
-                           step="0.1"
-                           th:field="*{strainInNotWork}"
-                           class="form-control"
-                           placeholder="Введите величину напряжений"/>
-                </div>
-                <div class="col-3"></div>
-            </div>
-
-            <div class="form-group form-row align-items-center col-12">
-                <div class="col-3"></div>
-                <div class="col-2">
-                    <label for="hasStrain"
-                           class="col-form-label">Наличие свилей
-                    </label>
-                </div>
-                <div class="col-4">
-                    <div class="form-check">
-                        <input id="hasStrain"
-                               type="checkbox"
-                               class="form-check-input"
-                               th:field="*{hasStrain}">
-                    </div>
-                </div>
-                <div class="col-3"></div>
-            </div>
-
-            <div class="form-group form-row align-items-center col-12">
-                <div class="col-3"></div>
-                <div class="col-2">
-                    <label for="type"
-                           class="col-form-label">Тип заготовки
-                    </label>
-                </div>
-                <div class="col-4>">
-                    <select name="type" id="type" class="form-control">
-                        <option th:value="${plate.type.id}" selected>[[${plate.type.name}]]</option>
-                        <option
-                                th:each="type : ${types}"
-                                th:value="${type.id}"
-                                th:text="${type.name}"
-                        ></option>
-                    </select>
-                </div>
-                <div class="col-3"></div>
-            </div>
-
-            <div class="form-group form-row align-items-center col-12">
-                <div class="col-3"></div>
-                <div class="col-2">
-                    <label for="material"
-                           class="col-form-label">Материал
-                    </label>
-                </div>
-                <div class="col-4>">
-                    <select name="material" id="material" class="form-control">
-                        <option th:value="${plate.material.id}" selected>[[${plate.material.name}]]</option>
-                        <option
-                                th:each="material : ${materials}"
-                                th:value="${material.id}"
-                                th:text="${material.name}"
-                        ></option>
-                    </select>
+                           placeholder="Введите страну-производителя"/>
+                    <ul th:if="${errors.containsKey('country')}">
+                        <li th:each="error : ${errors.get('country')}" th:text="${error}" style="color: darkred"></li>
+                    </ul>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -183,7 +76,7 @@
                 <div class="col-3"></div>
                 <div class="col-2">
                     <label for="note"
-                           class="col-form-label">Примечание
+                           class="col-form-label">Описание
                     </label>
                 </div>
                 <div class="col-4">
@@ -191,7 +84,7 @@
                            type="text"
                            th:field="*{note}"
                            class="form-control"
-                           placeholder="Введите примечание"/>
+                           placeholder="Введите толщину заготовки"/>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -199,7 +92,7 @@
             <div class="form-group row align-items-center align col-12">
                 <div class="col-3"></div>
                 <div class="col-3">
-                    <a th:href="@{/plate/start}"
+                    <a th:href="@{/product/start}"
                        class="btn btn-secondary col-12" role="button">Назад</a>
                 </div>
                 <button type="submit" class="btn btn-success col-3">Изменить</button>
